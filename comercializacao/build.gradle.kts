@@ -22,7 +22,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.8")
+	implementation("org.springframework.boot:spring-boot-starter-validation:2.6.7")
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb:2.7.0")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

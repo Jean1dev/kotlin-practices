@@ -18,14 +18,29 @@ interface CambioApiDocs {
     @ApiResponses(
             value = [
                 ApiResponse(
-                        responseCode = HttpURLConnection.HTTP_OK.toString(),
-                        description = "Cambio atualizado"
+                    responseCode = HttpURLConnection.HTTP_OK.toString(),
+                    description = "Cambio atualizado"
                 ),
                 ApiResponse(
-                        responseCode = HttpURLConnection.HTTP_BAD_REQUEST.toString(),
-                        description = "Não foi possivel completar a operação"
+                    responseCode = HttpURLConnection.HTTP_BAD_REQUEST.toString(),
+                    description = "Não foi possivel completar a operação"
                 )
             ]
     )
     fun upsert(@Valid @RequestBody dto: CambioDto): ResponseEntity<Cambio>
+
+    @Operation(summary = "Recuperar historico")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = HttpURLConnection.HTTP_OK.toString(),
+                description = "Retorna todo historico ate o momento"
+            ),
+            ApiResponse(
+                responseCode = HttpURLConnection.HTTP_BAD_REQUEST.toString(),
+                description = "Não foi possivel completar a operação"
+            )
+        ]
+    )
+    fun getHistorico(): ResponseEntity<MutableList<Cambio>>
 }
