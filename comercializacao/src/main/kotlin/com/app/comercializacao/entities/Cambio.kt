@@ -10,5 +10,15 @@ data class Cambio(
     @Id
     val id: UUID?,
     var valor: Double,
-    var lastTimeUpdated: LocalDateTime
+    var lastTimeUpdated: LocalDateTime,
+    val code: String?,
+    val codein: String?,
+    val name: String?,
+    val high: Double?,
+    val low: Double?,
+    val varBid: Double?,
+    val pctChange: Double?,
+    val bid: Double?,
+    val ask: Double?,
+    val timestamp: Number?
 )

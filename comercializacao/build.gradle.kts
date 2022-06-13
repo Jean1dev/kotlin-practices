@@ -26,8 +26,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation:2.6.7")
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-mongodb
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb:2.7.0")
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.3")
+
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.ninja-squad:springmockk:3.1.1")
 }
 
 tasks.withType<KotlinCompile> {

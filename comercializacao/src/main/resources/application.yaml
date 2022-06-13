@@ -6,3 +6,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/cambio
+
+
+api:
+  cambio:
+    url: https://economia.awesomeapi.com.br
