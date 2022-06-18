@@ -5,7 +5,6 @@ import com.app.comercializacao.entities.Cambio
 import com.app.comercializacao.feign.CambioApiClient
 import com.app.comercializacao.mappers.toDomain
 import com.app.comercializacao.repositories.CambioRepository
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import javax.annotation.PostConstruct
