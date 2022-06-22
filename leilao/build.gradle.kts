@@ -13,8 +13,6 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
-	maven { url = uri("https://repo.spring.io/milestone") }
-	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
 dependencies {
@@ -28,6 +26,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb:2.7.0")
 	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.3")
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
+	implementation("org.springframework.boot:spring-boot-starter-webflux:2.7.0")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
