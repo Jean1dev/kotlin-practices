@@ -4,7 +4,7 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGO_URL}
+      uri: mongodb://localhost:27017/cambio
 
 api:
   cambio:
