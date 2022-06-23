@@ -28,6 +28,10 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.3")
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux
 	implementation("org.springframework.boot:spring-boot-starter-webflux:2.7.0")
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
+	implementation("org.springframework.boot:spring-boot-starter-websocket:2.7.0")
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

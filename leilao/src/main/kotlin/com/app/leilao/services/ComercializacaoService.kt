@@ -19,4 +19,10 @@ class ComercializacaoService(
             .buffer(200)
     }
 
+    fun getItems(): Flux<List<ItemComerciavel>> {
+        return Flux.fromIterable(repository.findAll())
+            .cache(Duration.ofSeconds(2))
+            .buffer(200)
+    }
+
 }
