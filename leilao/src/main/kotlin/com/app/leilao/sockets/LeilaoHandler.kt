@@ -61,7 +61,7 @@ class LeilaoHandler(
     }
 
     private fun listagemUsuariosOnline(): SocketMessage {
-        val list = sessionList.map { it.value}
+        val list = sessionList.map { it.value }
         return SocketMessage.listagemUser(list)
     }
 
