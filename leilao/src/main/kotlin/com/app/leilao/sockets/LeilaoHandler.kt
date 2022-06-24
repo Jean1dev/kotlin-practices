@@ -14,13 +14,19 @@ class User(val id: Long, val name: String?)
 
 data class SocketMessage(val msgType: String, val data: Any) {
     companion object {
-        fun userConnected(data: Any) = SocketMessage(
-            "NEW-USER-CONNECTED",
+
+        fun getItems(data: Any) = SocketMessage(
+            "LIST-ITEMS-AVAILABLES",
             data
         )
 
-        fun getItems(data: Any)= SocketMessage(
-            "LIST-ITEMS-AVAILABLES",
+        fun listagemUser(data: Any) = SocketMessage(
+            "LIST-USER-AVAILABLES",
+            data
+        )
+
+        fun leilaoModificado(data: Any) = SocketMessage(
+            msgType = "LIST-LEILAO",
             data
         )
     }
@@ -37,15 +43,26 @@ class LeilaoHandler(
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
         super.afterConnectionClosed(session, status)
         sessionList -= session
+        broadcastToOthers(session, listagemUsuariosOnline())
     }
 
     @Throws(Exception::class)
     override fun afterConnectionEstablished(session: WebSocketSession) {
-        println("received connection")
+        println("received connection, total open " + sessionList.size)
         val user = User(uids.getAndIncrement(), "")
         sessionList.put(session!!, user)
         emit(session, SocketMessage.getItems(service.getItems()))
-        broadcastToOthers(session, SocketMessage.userConnected(user))
+        emit(session, listagemUsuariosOnline())
+        broadcastToOthers(session, listagemUsuariosOnline())
+    }
+
+    fun leilaoCriadoEvento(data: Any) {
+        broadcast(SocketMessage.leilaoModificado(data))
+    }
+
+    private fun listagemUsuariosOnline(): SocketMessage {
+        val list = sessionList.map { it.value}
+        return SocketMessage.listagemUser(list)
     }
 
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {

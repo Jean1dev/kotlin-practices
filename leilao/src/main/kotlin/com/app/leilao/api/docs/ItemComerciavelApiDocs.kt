@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import reactor.core.publisher.Flux
 import java.net.HttpURLConnection
@@ -29,4 +30,35 @@ interface ItemComerciavelApiDocs {
         ]
     )
     fun criarItemComercializacao(@Valid @RequestBody dto: List<ItemComerciavelDto>): ResponseEntity<Flux<List<ItemComerciavel>>>
+
+
+    @Operation(summary = "Cria um novo leilao a partir dos itens existentes")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = HttpURLConnection.HTTP_OK.toString(),
+                description = "Sucesso"
+            ),
+            ApiResponse(
+                responseCode = HttpURLConnection.HTTP_BAD_REQUEST.toString(),
+                description = "Operação Rejeitada"
+            )
+        ]
+    )
+    fun iniciarLeilao(@PathVariable("id") id: String)
+
+    @Operation(summary = "Recuperar items comerciaveis")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = HttpURLConnection.HTTP_OK.toString(),
+                description = "Sucesso"
+            ),
+            ApiResponse(
+                responseCode = HttpURLConnection.HTTP_BAD_REQUEST.toString(),
+                description = "Operação Rejeitada"
+            )
+        ]
+    )
+    fun getAllItens(): ResponseEntity<Flux<List<ItemComerciavel>>>
 }
