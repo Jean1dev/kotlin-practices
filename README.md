@@ -6,3 +6,6 @@
 Comercialização
 
 https://comercializacao.herokuapp.com/swagger-ui/index.html#/
+
+Leilão
+https://leilao-app.herokuapp.com/swagger-ui/index.html#/
