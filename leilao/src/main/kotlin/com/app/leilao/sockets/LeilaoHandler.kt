@@ -1,6 +1,8 @@
 package com.app.leilao.sockets
 
+import com.app.leilao.entities.LanceLeilao
 import com.app.leilao.services.ComercializacaoService
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.stereotype.Component
@@ -25,8 +27,8 @@ data class SocketMessage(val msgType: String, val data: Any) {
             data
         )
 
-        fun leilaoModificado(data: Any) = SocketMessage(
-            msgType = "LIST-LEILAO",
+        fun leilaoCreated(data: Any) = SocketMessage(
+            msgType = "LEILAO-CREATED",
             data
         )
     }
@@ -57,7 +59,7 @@ class LeilaoHandler(
     }
 
     fun leilaoCriadoEvento(data: Any) {
-        broadcast(SocketMessage.leilaoModificado(data))
+        broadcast(SocketMessage.leilaoCreated(data))
     }
 
     private fun listagemUsuariosOnline(): SocketMessage {
@@ -71,11 +73,29 @@ class LeilaoHandler(
         // {type: "join/say", data: "name/msg"}
         when (json.get("type").asText()) {
             "join" -> {
-
+                handleJoinToLeilao(json, session)
             }
             "say" -> {
                 broadcast(SocketMessage("say", json.get("data").asText()))
             }
+        }
+    }
+
+    private fun findUserInSession(session: WebSocketSession): User? {
+        return sessionList[session]
+    }
+
+    private fun handleJoinToLeilao(json: JsonNode, session: WebSocketSession) {
+        val user = findUserInSession(session)
+
+        if (user != null) {
+            val lanceLeilao = LanceLeilao(
+                idUser = user.id,
+                nameUser = user.name,
+                valorLance = json.get("valorLance").asDouble()
+            )
+
+            service.addLance(json.get("id").asText(), lanceLeilao)
         }
     }
 
