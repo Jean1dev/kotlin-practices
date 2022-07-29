@@ -4,8 +4,7 @@
 
 ## :information_source: Swagger
 Comercialização
-
-https://comercializacao.herokuapp.com/swagger-ui/index.html#/
+<a target="_blank" href="https://comercializacao.herokuapp.com/swagger-ui/index.html#/">Swagger</a>
 
 Leilão
-https://leilao-app.herokuapp.com/swagger-ui/index.html#/
+<a target="_blank" href="https://leilao-app.herokuapp.com/swagger-ui/index.html#/">Swagger</a>
