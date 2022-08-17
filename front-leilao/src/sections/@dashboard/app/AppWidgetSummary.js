@@ -28,11 +28,13 @@ AppWidgetSummary.propTypes = {
   title: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
   sx: PropTypes.object,
+  clickEvent: PropTypes.func
 };
 
-export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
+export default function AppWidgetSummary({ title, total, icon, color = 'primary', clickEvent, sx, ...other }) {
   return (
     <Card
+      onClick={clickEvent}
       sx={{
         py: 5,
         boxShadow: 0,

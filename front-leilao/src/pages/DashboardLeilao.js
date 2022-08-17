@@ -1,7 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 // @mui
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
 import Page from '../components/Page';
@@ -16,17 +16,26 @@ import LeilaoProcessContext from '../context/LeilaoProcessContext';
 // ----------------------------------------------------------------------
 
 export default function DashboardLeilao() {
-  const { itensLeilao, eventos } = useContext(LeilaoProcessContext)
+  const { itensLeilao, eventos, leilaoAtivo, join } = useContext(LeilaoProcessContext)
+
+  useEffect(() => console.log(eventos), [eventos])
 
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Bem vindo ao leilão ONline
+          Bem vindo ao leilão Online
         </Typography>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          {
+            leilaoAtivo.map((item, index) => (
+              <Grid key={index} item xs={12} sm={6} md={3}>
+                <AppWidgetSummary clickEvent={() => join(item)} title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+              </Grid>
+            ))
+          }
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
           </Grid>
 
@@ -40,7 +49,7 @@ export default function DashboardLeilao() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
@@ -60,13 +69,7 @@ export default function DashboardLeilao() {
               title="Ultimos Lances"
               list={eventos.map((_, index) => ({
                 id: faker.datatype.uuid(),
-                title: [
-                  '1983, orders, $4220',
-                  '12 Invoices have been paid',
-                  'Order #37745 from September',
-                  'New order placed #XF-2356',
-                  'New order placed #XF-2346',
-                ][index],
+                title: _,
                 type: `order${index + 1}`,
                 time: faker.date.past(),
               }))}
