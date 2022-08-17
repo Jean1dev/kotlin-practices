@@ -3,6 +3,7 @@ package com.app.leilao.services
 import com.app.leilao.dtos.ItemComerciavelDto
 import com.app.leilao.entities.ItemComerciavel
 import com.app.leilao.entities.ItemLeilao
+import com.app.leilao.entities.LanceLeilao
 import com.app.leilao.mappers.toDomain
 import com.app.leilao.repository.ItemComerciavelRepository
 import com.app.leilao.repository.ItemLeilaoRepository
@@ -46,6 +47,17 @@ class ComercializacaoService(
             )
         )
         publisher.publishEvent(itemLeilao)
+    }
+
+    fun addLance(id: String, lance: LanceLeilao) {
+        leilaoRepository.findById(UUID.fromString(id)).ifPresent {
+            if (it.lances.isNullOrEmpty()) {
+                it.lances = mutableListOf()
+            }
+
+            it.lances!!.add(lance)
+            leilaoRepository.save(it)
+        }
     }
 
 }

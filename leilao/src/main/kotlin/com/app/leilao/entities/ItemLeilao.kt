@@ -12,5 +12,13 @@ data class ItemLeilao(
     val id: UUID?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val dataHoraInicio: LocalDateTime,
-    val itemComerciavel: ItemComerciavel
-)
+    val itemComerciavel: ItemComerciavel,
+    var lances: MutableCollection<LanceLeilao>?
+) {
+    constructor(id: UUID?, dataHoraInicio: LocalDateTime, itemComerciavel: ItemComerciavel) : this(
+        id,
+        dataHoraInicio,
+        itemComerciavel,
+        lances = null
+    )
+}
