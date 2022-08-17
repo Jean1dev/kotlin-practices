@@ -1,9 +1,12 @@
 package com.app.leilao.sockets
 
+import com.app.leilao.entities.ItemLeilao
 import com.app.leilao.entities.LanceLeilao
 import com.app.leilao.services.ComercializacaoService
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.CloseStatus
@@ -27,8 +30,18 @@ data class SocketMessage(val msgType: String, val data: Any) {
             data
         )
 
+        fun leilaoData(data: Any) = SocketMessage(
+            msgType = "LEILAO-DATA",
+            data
+        )
+
         fun leilaoCreated(data: Any) = SocketMessage(
             msgType = "LEILAO-CREATED",
+            data
+        )
+
+        fun sendOcorrencias(data: Any) = SocketMessage(
+            msgType = "OCORRENCIAS",
             data
         )
     }
@@ -41,25 +54,42 @@ class LeilaoHandler(
 
     val sessionList = HashMap<WebSocketSession, User?>()
     var uids = AtomicLong(0)
+    val leiloesInfo = mutableListOf<ItemLeilao>()
+    val ocorrencias = mutableListOf<String>()
 
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
         super.afterConnectionClosed(session, status)
         sessionList -= session
         broadcastToOthers(session, listagemUsuariosOnline())
+        println("connection closed, total open " + sessionList.size)
     }
 
     @Throws(Exception::class)
     override fun afterConnectionEstablished(session: WebSocketSession) {
-        println("received connection, total open " + sessionList.size)
         val user = User(uids.getAndIncrement(), "")
         sessionList.put(session!!, user)
+
         emit(session, SocketMessage.getItems(service.getItems()))
         emit(session, listagemUsuariosOnline())
+        emit(session, infoLeilao())
         broadcastToOthers(session, listagemUsuariosOnline())
+        println("received connection, total open " + sessionList.size)
     }
 
-    fun leilaoCriadoEvento(data: Any) {
-        broadcast(SocketMessage.leilaoCreated(data))
+    private fun infoLeilao(): SocketMessage {
+        val mapper = ObjectMapper()
+        mapper.registerModule(JavaTimeModule())
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        return SocketMessage.leilaoData(mapper.writeValueAsString(leiloesInfo))
+    }
+
+    fun leilaoCriadoEvento(data: ItemLeilao) {
+        val mapper = ObjectMapper()
+        mapper.registerModule(JavaTimeModule())
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        val valueAsString = mapper.writeValueAsString(data)
+        broadcast(SocketMessage.leilaoCreated(valueAsString))
+        leiloesInfo.add(data)
     }
 
     private fun listagemUsuariosOnline(): SocketMessage {
@@ -73,7 +103,7 @@ class LeilaoHandler(
         // {type: "join/say", data: "name/msg"}
         when (json.get("type").asText()) {
             "join" -> {
-                handleJoinToLeilao(json, session)
+                handleJoinToLeilao(json.get("data"), session)
             }
             "say" -> {
                 broadcast(SocketMessage("say", json.get("data").asText()))
@@ -96,6 +126,8 @@ class LeilaoHandler(
             )
 
             service.addLance(json.get("id").asText(), lanceLeilao)
+            ocorrencias.add("USER JOINED")
+            broadcast(SocketMessage.sendOcorrencias(ocorrencias))
         }
     }
 
