@@ -44,7 +44,7 @@ export function ProviderLeilaoProcess({ children }) {
 
     useEffect(() => {
         if (!socketIORef.current?.connected) {
-            const wss = process.env.NODE_ENV === 'development' ? 'ws://localhost:8081/leilao' : 'ws://leilao-app.herokuapp.com/leilao'
+            const wss = process.env.NODE_ENV === 'development' ? 'ws://localhost:8081/leilao' : 'wss://leilao-app.herokuapp.com/leilao'
             socketIORef.current = new WebSocket(wss);
             socketIORef.current.connected = true
 
