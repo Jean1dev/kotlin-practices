@@ -36,7 +36,7 @@ export function ProviderLeilaoProcess({ children }) {
             default:
                 console.log('message not handling yet', message)
         }
-    }, [userConnected])
+    }, [])
 
     const join = useCallback((data) => {
         socketIORef.current.send(JSON.stringify({ type: 'join', data: { ...data, valorLance: 1 } }))
