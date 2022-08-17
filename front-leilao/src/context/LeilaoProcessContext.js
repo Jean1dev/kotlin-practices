@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createContext, useCallback, useEffect, useState, useRef } from 'react';
 
 const LeilaoProcessContext = createContext({});
@@ -20,7 +21,6 @@ export function ProviderLeilaoProcess({ children }) {
                 break
 
             case 'LEILAO-CREATED':
-                alert('Novo leilão criado')
                 setLeilao([JSON.parse(message.data)])
                 break
 
@@ -36,7 +36,7 @@ export function ProviderLeilaoProcess({ children }) {
             default:
                 console.log('message not handling yet', message)
         }
-    }, [userConnected, leilaoAtivo])
+    }, [userConnected])
 
     const join = useCallback((data) => {
         socketIORef.current.send(JSON.stringify({ type: 'join', data: { ...data, valorLance: 1 } }))
@@ -60,7 +60,7 @@ export function ProviderLeilaoProcess({ children }) {
                 setUserConneted([])
             }
 
-            socketIORef.current.onopen = (_data) => { }
+            socketIORef.current.onopen = () => { }
 
             socketIORef.current.onmessage = (data) => {
                 handleSocketMessage(JSON.parse(data.data))
@@ -68,13 +68,17 @@ export function ProviderLeilaoProcess({ children }) {
         }
 
 
-    }, [userConnected])
+    }, [userConnected, handleSocketMessage])
 
     return (
         <LeilaoProcessContext.Provider value={{ userConnected, itensLeilao, eventos, leilaoAtivo, join }}>
             {children}
         </LeilaoProcessContext.Provider>
     )
+}
+
+ProviderLeilaoProcess.propTypes = {
+    children: PropTypes.any.isRequired
 }
 
 export default LeilaoProcessContext
