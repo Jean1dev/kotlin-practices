@@ -2,18 +2,24 @@ import Image from "next/image";
 import { HomeContainer, HomeItem } from "../styles/pages/home";
 import { useKeenSlider } from 'keen-slider/react'
 import neloreImg from '../assets/nelore.jpg'
-
 import 'keen-slider/keen-slider.min.css'
+import Link from "next/link";
 
-const Boi = () => <HomeItem className="keen-slider__slide">
-  <Image src={neloreImg.src} width={520} height={480} alt={''} />
+const Boi = () => {
+  return (
+    <Link href={'/item/2'}>
+      <HomeItem
+        className="keen-slider__slide">
+        <Image src={neloreImg.src} width={520} height={480} alt={''} />
 
-  <footer>
-    <strong> Nelore</strong>
-    <span>79,90</span>
-  </footer>
+        <footer>
+          <strong> Nelore</strong>
+          <span>79,90</span>
+        </footer>
 
-</HomeItem>
+      </HomeItem>
+    </Link>)
+}
 
 const popula = () => {
   const arr = []
